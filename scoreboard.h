@@ -1,10 +1,10 @@
 /***********************************************************************
 * COSC1076 - Advanced Programming Techniques
-* Semester 2 2015 Assignment #1 
-* Full Name        : EDIT HERE
-* Student Number   : EDIT HERE
-* Course Code      : EDIT HERE
-* Program Code     : EDIT HERE
+* Semester 2 2015 Assignment #1
+* Full Name        : KIROLOS KALDAS
+* Student Number   : s3545643
+* Course Code      : COSC1076
+* Program Code     : BP096
 * Start up code provided by Paul Miller
 ***********************************************************************/
 #include "player.h"

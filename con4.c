@@ -1,56 +1,15 @@
 /***********************************************************************
 * COSC1076 - Advanced Programming Techniques
-* Semester 2 2015 Assignment #1 
-* Full Name        : EDIT HERE
-* Student Number   : EDIT HERE
-* Course Code      : EDIT HERE
-* Program Code     : EDIT HERE
+* Semester 2 2015 Assignment #1
+* Full Name        : KIROLOS KALDAS
+* Student Number   : s3545643
+* Course Code      : COSC1076
+* Program Code     : BP096
 * Start up code provided by Paul Miller
 ***********************************************************************/
 #include "con4.h"
 
-/**
- * @mainpage COSC1076 - Assignment 1 documentation.
- *
- * This is the main html documentation of assignment 1 for COSC1076 -
- * Advanced Programming Techniques for semester 2, 2015. You will find
- * here a description of the functions that you need to implement for
- * your assignment.
- *
- * Please note that this should not be your first stop when starting
- * your assignment. Please read the assignment 1 specifications that
- * are available on blackboard before reading this documentation. The
- * purpose of this documentation is to clarify the actual individual
- * requirements.
- *
- * This site presents you with the documentation for each function
- * that you need to implement broken down by the file that they exist
- * in. Please go to the <b>Files</b> tab and click on the file you wish to
- * get more information about and then click on that file. An
- * explanation of each function implemented in that file will be
- * displayed.
- **/
-
-/**
- * @file con4.c contains the main function which is the entry point into the 
- * application and manages the main memory.
- **/
-
-/**
- * the entry point into the game. You should display the main menu and 
- * respond to user requests.
- *
- * The main menu should look like this: 
- * Welcome to connect 4
- *  \n\--------------------
- * 1. Play Game
- * 2. Display High Scores
- * 3. Quit
- * Please enter your choice:
- *
- * This menu should also be redisplayed when the program returns from 
- * running an option.
- **/
+/* This function prints the menu of options */
 void displayMenu()
 {
 	printf("\nWelcome to Connect 4\n");
@@ -74,19 +33,22 @@ int main(void)
 
 	srand(time(NULL));
 
-    /* with each of the comments below, insert the code that performs
-     * this function 
-     */
-
     /* initialise the scoreboard */
+	init_scoreboard(scores);
 
-    /*display menu and get menu choice until the user chooses to quit */
 	do
 	{
+		/* display menu and get menu choice until the user chooses to quit */
 		displayMenu();
 
 		fgets(choice, INPUT_SIZE + 2, stdin);
 		
+		/****************************************************************************
+		* Refrence to the use of fgets function
+		* Steven Burrows
+		* sdb@cs.rmit.edu.au
+		* Created July 2004.
+		****************************************************************************/
 		if( choice[strlen(choice) - 1] != '\n' )
 		{
 			read_rest_of_line();
@@ -101,14 +63,26 @@ int main(void)
 
 		switch(menuChoice)
 		{
+			/* play a game option */
 			case 1:
-				play_game(&human_player, &computer_player);
+				/* Get the returned value of the play game */
+				winner = play_game(&human_player, &computer_player);
+				
+				/* if there was not a draw, add player to the scoreboard in
+				order by number of tokens in play */
+				if(winner != NULL)
+				{
+					add_to_scoreboard(scores, winner);	
+				}
 				break;
 
+			/* display the scoreboard option */
 			case 2:
 				printf("Show High Score\n\n");
+				display_scores(scores);
 				break;
 
+			/* quit the program option */
 			case 3:
 				printf("Quit Game\n\n");
 				break;
@@ -119,18 +93,5 @@ int main(void)
 	}
 	while (menuChoice != 3);
 
-	    /* play a game option */
-
-		    /* if there was not a draw, add player to the scoreboard in
-		     * order by number of tokens in play
-		     */
-
-		    /* let the user know who won */
-
-		    /* if there was a draw, alert the user to this fact */
-
-		/* display the scoreboard option */
-
-		/* quit the program option */
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }

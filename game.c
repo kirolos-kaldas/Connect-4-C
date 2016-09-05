@@ -1,19 +1,311 @@
 /***********************************************************************
 * COSC1076 - Advanced Programming Techniques
 * Semester 2 2015 Assignment #1
-* Full Name        : EDIT HERE
-* Student Number   : EDIT HERE
-* Course Code      : EDIT HERE
-* Program Code     : EDIT HERE
+* Full Name        : KIROLOS KALDAS
+* Student Number   : s3545643
+* Course Code      : COSC1076
+* Program Code     : BP096
 * Start up code provided by Paul Miller
 ***********************************************************************/
 #include "game.h"
 
-/**
-* @file game.c contains the functions that relate to the management of
-* the game.
-**/
 
+/* Checks for a row winner */
+int checkRowWinner(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (j + 3 < BOARDWIDTH)
+				{
+					if (board[i][j + 1] == current->thiscolor)
+					{
+						if (board[i][j + 2] == current->thiscolor)
+						{
+							if (board[i][j + 3] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks for a column winner */
+int checkColumnWinner(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (i + 3 < BOARDHEIGHT)
+				{
+					if (board[i + 1][j] == current->thiscolor)
+					{
+						if (board[i + 2][j] == current->thiscolor)
+						{
+							if (board[i + 3][j] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks for a diagonal winner */
+int checkDiagonalTopRight(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (i + 3 < BOARDHEIGHT && j + 3 < BOARDWIDTH)
+				{
+					if (board[i + 1][j + 1] == current->thiscolor)
+					{
+						if (board[i + 2][j + 2] == current->thiscolor)
+						{
+							if (board[i + 3][j + 3] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks for a diagonal winner */
+int checkDiagonalTopLeft(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (i - 3 > -1 && j - 3 > -1)
+				{
+					if (board[i - 1][j - 1] == current->thiscolor)
+					{
+						if (board[i - 2][j - 2] == current->thiscolor)
+						{
+							if (board[i - 3][j - 3] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks for a diagonal winner */
+int checkDiagonalBottomRight(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (i - 3 > -1 && j + 3 < BOARDWIDTH)
+				{
+					if (board[i - 1][j + 1] == current->thiscolor)
+					{
+						if (board[i - 2][j + 2] == current->thiscolor)
+						{
+							if (board[i - 3][j + 3] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks for a diagonal winner */
+int checkDiagonalBottomLeft(struct player * current, enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == current->thiscolor)
+			{
+				/* checks for out of bounds to prevent seg faults */
+				if (i + 3 < BOARDHEIGHT && j - 3 > -1)
+				{
+					if (board[i + 1][j - 1] == current->thiscolor)
+					{
+						if (board[i + 2][j - 2] == current->thiscolor)
+						{
+							if (board[i + 3][j - 3] == current->thiscolor)
+							{
+								true++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	if (true > 0)
+	{
+		printf("\n%s is the Winner!\n", current->name);
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks if the board is empty which would mean that its the first turn */
+int emptyBoard(enum cell_contents board[][BOARDWIDTH])
+{
+	BOOLEAN test;
+	int i, j, true, false;
+	true = false = 0;;
+	for (i = 0; i < BOARDHEIGHT; i++)
+	{
+		for (j = 0; j < BOARDWIDTH; j++)
+		{
+			if (board[i][j] == C_EMPTY)
+			{
+				true++;
+			}
+			else
+			{
+				false++;
+			}
+		}
+	}
+	
+	if (false == 0)
+	{
+		return test = TRUE;
+	}
+	else
+	{
+		return test = FALSE;
+	}
+}
+
+/* Checks if the board is full */
 int fullBoard(enum cell_contents board[][BOARDWIDTH])
 {
 	BOOLEAN test;
@@ -43,51 +335,14 @@ int fullBoard(enum cell_contents board[][BOARDWIDTH])
 	}
 }
 
-/**
-* This requirement requires you to understand a little more about pointers.
-* We want you to understand that all pointers just point to another memory
-* address whether they are a single pointer, a pointer to a pointer, etc.
-*
-* In this example, we want you to swap the pointers for two players.
-* This will be called from \ref play_game with a call such as
-* swap(&current, &other) and at the end of this function, current and
-* other's pointers will be swapped.
-* For example, if current points to the human player and other points to
-* the computer player, at the end of this function, the player they point
-* to will have been swapped.
-*
-* @param current the current player who has just completed their turn
-* @param other the next player whose turn it will be
-**/
-
+/* This function swaps the players for every round */
 static void swap_players(struct player ** current, struct player ** other)
 {
-	/* implement a classic swap using a temporary pointer */
-	struct player temp;
-
-	/*strcpy_s((void*)temp->name, NAMELEN + 1, NULL);
-	(void*)temp->thiscolor = NULL;
-	(void*)temp->counters = NULL;
-	(void*)temp->type = NULL;
-
-	strcpy_s(temp->name, NAMELEN + 1, current->name);
-	temp->thiscolor = current->thiscolor;
-	temp->counters = current->counters;
-	temp->type = current->type;
-
-	strcpy_s(current->name, NAMELEN + 1, other->name);
-	current->thiscolor = other->thiscolor;
-	current->counters = other->counters;
-	current->type = other->type;
-
-	strcpy_s(other->name, NAMELEN + 1, temp->name);
-	other->thiscolor = temp->thiscolor;
-	other->counters = temp->counters;
-	other->type = temp->type;*/
-
-	temp = **current;
-	**current = **other;
-	**other = temp;
+	struct player * temp;
+	temp = NULL;
+	temp = *current;
+	*current = *other;
+	*other = temp;
 }
 
 /**
@@ -123,73 +378,117 @@ static void swap_players(struct player ** current, struct player ** other)
 * @param computer a pointer to details about the computer player
 **/
 struct player * play_game(struct player * human,
-struct player* computer)
+struct player * computer)
 {
 	/* declaration that allocates the board for the game */
 	enum cell_contents board[BOARDHEIGHT][BOARDWIDTH];
-	struct player current, other;
-
-	int i = 0;
+	struct player *current, *other;
+	enum game_state winner;
 
 	initialise_board(board);
 
-	get_human_player(human);
+	if (get_human_player(human) == RTM)
+	{
+		return NULL;
+	}
 
 	get_computer_player(computer);
 
+	/* This statement declares the currnt and other */
+	if (human->thiscolor == C_WHITE)
+	{
+		current = human;
+		other = computer;
+	}
+	else
+	{
+		current = computer;
+		other = human;
+	}
+
 	do
 	{
-		take_turn(&current, human, computer, board);
+		/* If the baord is empty, print the board an extra time */
+		if (emptyBoard(board) == TRUE)
+		{
+			display_board(board);
+		}
+		
+		/* The current player gets a turn */
+		if (take_turn(current, board) == RTM)
+		{
+			return NULL;
+		}
+		
 		display_board(board);
-		/*swap_players(&current, &other);*/
-		i++;
-		/*i < 2*/
-	} while (i < 2);
-	/*fullBoard(board) == TRUE*/
-	/*Things to do:
-	*Swap current players*/
-
-	return NULL;
+		
+		/* Check for winner */
+		winner = test_for_winner(current, board);
+		
+		/* Swapping the current player to the other player */
+		swap_players(&current, &other);
+	} while (winner == G_NO_WINNER);
+	
+	if (winner == G_RED)
+	{
+		if (human->thiscolor == C_RED)
+		{
+			return human;
+		}
+		else
+		{
+			return computer;
+		}
+	}
+	else if (winner == G_WHITE)
+	{
+		if (human->thiscolor == C_WHITE)
+		{
+			return human;
+		}
+		else
+		{
+			return computer;
+		}
+	}
+	else 
+	{
+		/* Should be a draw... */
+		return NULL;
+	}
 }
 
-/**
-* In this requirement you are required to test what the game's current
-* state is.
-* Possible game states are defined by the game_state enumeration:
-* enum game_state
-* {
-*    G_NO_WINNER=-1,
-*    G_DRAW,
-*    G_RED,
-*    G_WHITE
-* };
-*
-* Most of these states should be self-explanatory but let's go through
-* their meaning.
-*
-*    &bull; G_NO_WINNER: the game is still in progress and therefore there
-*    is no winner yet.
-*
-*    &bull; G_DRAW: neither player has won the game but there are no more
-*    spaces left for a player to make a move.
-*
-*    &bull; G_RED / G_WHITE: the player whose token is the specified
-*    colour has won the game.
-*
-* Your task in this function is to iterate over the 2-dimensional array
-* (the board) looking for four in a row in any direction â€“ if you find
-* this, return the appropriate value of either G_RED or G_WHITE.
-*
-* Next, test for a draw. If none of these cases hold, return G_NO_WINNER.
-* @param board the gameboard to test for a winner
-**/
-enum game_state test_for_winner(
+/* This function test for the winner */
+enum game_state test_for_winner(struct player * current, 
 enum cell_contents board[][BOARDWIDTH])
 {
-	/* default return value  - delete this comment and the return statement
-	* below and replace them with the game logic for deciding whether a
-	* game has been won and who the winner is
-	*/
-	return G_NO_WINNER;
+	enum game_state test = G_NO_WINNER;
+
+	/* Checks for each type of winner */
+	if (checkColumnWinner(current, board) == TRUE || checkRowWinner(current, board) == TRUE
+		|| checkDiagonalTopLeft(current, board) == TRUE || checkDiagonalTopRight(current, board) == TRUE
+		|| checkDiagonalBottomRight(current, board) == TRUE || checkDiagonalBottomLeft(current, board) == TRUE)
+	{
+		if (current->thiscolor == C_RED)
+		{
+			test = G_RED;
+		}
+		else if (current->thiscolor == C_WHITE)
+		{
+			test = G_WHITE;
+		}
+	}
+	/* If the board is full and no winners, means the game ended in a draw */
+	else if (fullBoard(board) == FALSE)
+	{
+		printf("\nGame has ended. Its a draw.\n");
+		test = G_DRAW;
+	}
+	else
+	{
+		test = G_NO_WINNER;
+	}
+	
+	return test;
 }
 

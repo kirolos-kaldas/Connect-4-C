@@ -1,17 +1,17 @@
 /***********************************************************************
 * COSC1076 - Advanced Programming Techniques
-* Semester 2 2015 Assignment #1 
-* Full Name        : EDIT HERE
-* Student Number   : EDIT HERE
-* Course Code      : EDIT HERE
-* Program Code     : EDIT HERE
+* Semester 2 2015 Assignment #1
+* Full Name        : KIROLOS KALDAS
+* Student Number   : s3545643
+* Course Code      : COSC1076
+* Program Code     : BP096
 * Start up code provided by Paul Miller
 ***********************************************************************/
 #include <stdlib.h>
 #include "player.h"
-#include "time.h"
 #include "board.h"
 #include "helpers.h"
+
 /**
  * the various possibilities when we check for a winner
  **/
@@ -47,6 +47,6 @@ struct player * play_game(struct player *, struct player*);
  * tokens in a row in any direction, however you should not wrap 
  * around the board.
  **/
-enum game_state test_for_winner(
+enum game_state test_for_winner(struct player * current, 
         enum cell_contents board[][BOARDWIDTH]);
 

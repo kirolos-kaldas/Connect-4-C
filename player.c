@@ -1,75 +1,16 @@
 /***********************************************************************
 * COSC1076 - Advanced Programming Techniques
-* Semester 2 2015 Assignment #1
-* Full Name        : EDIT HERE
-* Student Number   : EDIT HERE
-* Course Code      : EDIT HERE
-* Program Code     : EDIT HERE
+* Semester 2 2015 Assignment #1 
+* Full Name        : KIROLOS KALDAS
+* Student Number   : s3545643
+* Course Code      : COSC1076
+* Program Code     : BP096
 * Start up code provided by Paul Miller
 ***********************************************************************/
 #include "player.h"
-color playersColor;
+color colorPlayer;
 
-int emptyBoard(enum cell_contents board[][BOARDWIDTH])
-{
-	BOOLEAN test;
-	int i, j, true, false;
-	true = false = 0;;
-	for (i = 0; i < BOARDHEIGHT; i++)
-	{
-		for (j = 0; j < BOARDWIDTH; j++)
-		{
-			if (board[i][j] == C_EMPTY)
-			{
-				true++;
-			}
-			else
-			{
-				false++;
-			}
-		}
-	}
-	if (false == 0)
-	{
-		return test = TRUE;
-	}
-	else
-	{
-		return test = FALSE;
-	}
-}
-
-int firstTurn(enum cell_contents board[][BOARDWIDTH])
-{
-	BOOLEAN test;
-	int i, j, true, false;
-	true = false = 0;
-	for (i = 0; i < BOARDHEIGHT; i++)
-	{
-		for (j = 0; j < BOARDWIDTH; j++)
-		{
-			if (board[i][j] == C_EMPTY)
-			{
-				true++;
-			}
-			else
-			{
-				false++;
-			}
-		}
-	}
-
-	if (false < 2)
-	{
-		test = TRUE;
-	}
-	else
-	{
-		test = FALSE;
-	}
-	return test;
-}
-
+/* Randomly generates a column number */
 int compColumnChoice(struct player * current, int * numColumn)
 {
 	*numColumn = 0;
@@ -79,11 +20,11 @@ int compColumnChoice(struct player * current, int * numColumn)
 	{
 		*numColumn = 1;
 	}
-	current->counters++;
 
 	return *numColumn;
 }
 
+/* This functions makes the user input the desired column number */
 int humanColumnChoice(struct player * current, int * numColumn)
 {
 	BOOLEAN test;
@@ -93,34 +34,47 @@ int humanColumnChoice(struct player * current, int * numColumn)
 
 	do
 	{
-		fgets(column, INPUT_SIZE + 2, stdin);
-
-		/****************************************************************************
-		* Refrence to the use of fgets function
-		* Steven Burrows
-		* sdb@cs.rmit.edu.au
-		* Created July 2004.
-		****************************************************************************/
-		if (column[strlen(column) - 1] != '\n')
+		/* If the user inputs control-d, it will return him to the menu */
+		if (fgets(column, INPUT_SIZE + 2, stdin) == NULL)
 		{
-			printf("The column number entered doesn't exist. Re-Enter Column Number: ");
-			read_rest_of_line();
-			test = FALSE;
+			printf("\n%s has quit the game!\n", current->name);
+			return RTM;
+		}
+		/* If the user inputs '\n', it will return him to the menu */
+		else if (strcmp(column, "\n") == 0)
+		{
+			printf("\n%s has quit the game!\n", current->name);
+			return RTM;
 		}
 		else
 		{
-			column[strlen(column) - 1] = '\0';
-			*numColumn = (int)strtol(column, &pointer, 10);
-			test = TRUE;
-			
-			if (*numColumn > 0 && *numColumn < 8)
+			/****************************************************************************
+			* Refrence to the use of fgets function
+			* Steven Burrows
+			* sdb@cs.rmit.edu.au
+			* Created July 2004.
+			****************************************************************************/
+			if (column[strlen(column) - 1] != '\n')
 			{
-				test = TRUE;
+				printf("The column number entered doesn't exist. Re-Enter Column Number: ");
+				read_rest_of_line();
+				test = FALSE;
 			}
 			else
 			{
-				printf("The column number entered doesn't exist. Re-Enter Column Number: ");
-				test = FALSE;
+				column[strlen(column) - 1] = '\0';
+				*numColumn = (int)strtol(column, &pointer, 10);
+				test = TRUE;
+				
+				if (*numColumn > 0 && *numColumn < 8)
+				{
+					test = TRUE;
+				}
+				else
+				{
+					printf("The column number entered doesn't exist. Re-Enter Column Number: ");
+					test = FALSE;
+				}
 			}
 		}
 	} while (test != TRUE);
@@ -129,7 +83,7 @@ int humanColumnChoice(struct player * current, int * numColumn)
 }
 
 /**
-* @param human the human player to initialise
+*  Initialises the human player
 **/
 enum input_result get_human_player(struct player* human)
 {
@@ -139,70 +93,74 @@ enum input_result get_human_player(struct player* human)
 	printf("\nWhat is your name?\n");
 	do
 	{
-		fgets(name, NAMELEN + 1, stdin);
-
-		/****************************************************************************
-		* Refrence to the use of fgets function
-		* Steven Burrows
-		* sdb@cs.rmit.edu.au
-		* Created July 2004.
-		****************************************************************************/
-		if (name[strlen(name) - 1] != '\n')
+		/* If the user inputs control-d, it will return him to the menu */
+		if (fgets(name, NAMELEN + 1, stdin) == NULL)
 		{
-			/* String was too long. Reject string and flush input buffer. */
-			printf("The name entered is too long. Re-Enter Name:\n");
-			read_rest_of_line();
-			test = FALSE;
+			printf("The player has quit before they got started!\n");
+			return RTM;
+		}
+		/* If the user inputs '\n', it will return him to the menu */
+		else if (strcmp(name, "\n") == 0)
+		{
+			printf("The player has quit before they got started!\n");
+			return RTM;
 		}
 		else
 		{
-			/* String length was ok. Remove the '\n' character. */
-			name[strlen(name) - 1] = '\0';
-			test = TRUE;
+			/****************************************************************************
+			* Refrence to the use of fgets function
+			* Steven Burrows
+			* sdb@cs.rmit.edu.au
+			* Created July 2004.
+			****************************************************************************/
+			if (name[strlen(name) - 1] != '\n')
+			{
+				/* String was too long. Reject string and flush input buffer. */
+				printf("The name entered is too long. Re-Enter Name:\n");
+				read_rest_of_line();
+				test = FALSE;
+			}
+			else
+			{
+				/* String length was ok. Remove the '\n' character. */
+				name[strlen(name) - 1] = '\0';
+				test = TRUE;
+			}
 		}
 	} while (test != TRUE);
 
-	/* This statement is used to copy strings. strycpy_s is used only on visual so if
-	the code is run on server need to comment out strcpy_s and uncomment strcpy.*/
-	/*strcpy_s(&human->name, NAMELEN + 1, name);*/
-	strcpy(&human->name, name);
+	/* Copy the inputed name to the human name */
+	strcpy(human->name, name);
 
-	playersColor = rand() % 2;
+	/* To generate a random number */
+	srand(time(NULL));
 
-	if (playersColor == 0)
+	/* Generate a random color */
+	colorPlayer = rand() % 2;
+
+	if (colorPlayer == 0)
 	{
-		playersColor = C_RED;
+		colorPlayer = C_WHITE;
 	}
 
-	if (playersColor == C_RED)
-	{
-		human->thiscolor = C_RED;
-	}
-	else if (playersColor == C_WHITE)
-	{
-		human->thiscolor = C_WHITE;
-	}
+	human->thiscolor = colorPlayer;
 
 	human->counters = 0;
 
 	human->type = HUMAN;
-	/* placeholder return value. You should prompt the user
-	* for their name and then initialise all other values in the
-	* player struct to sensible values.
-	*/
+	
 	return SUCCESS;
 }
 
 /**
-* @param computer the computer player to initialise
+*  Initialise computer player
 **/
 enum input_result get_computer_player(struct player * computer)
 {
-	char name[9] = "Computer";
-	/*strcpy_s(&computer->name, NAMELEN + 1, name);*/
-	strcpy(&computer->name, name);
+	char name[NAMELEN + 1] = "Computer";
+	strcpy(computer->name, name);
 
-	if (playersColor == C_RED)
+	if (colorPlayer == C_RED)
 	{
 		computer->thiscolor = C_WHITE;
 	}
@@ -214,172 +172,85 @@ enum input_result get_computer_player(struct player * computer)
 	computer->counters = 0;
 
 	computer->type = COMPUTER;
-	/* initialise all variables that are part of the struct to sensible
-	* values */
-
-	return FAILURE;
+	
+	return SUCCESS;
 }
 
 /**
-* In this requirement, you need to handle the taking of a turn - either
-* of a human or a computer player.
-*
-* For the human player, you will need to allow the user to enter the
-* column they wish to place a token in. You will need to validate what
-* the user enters, then place a token correctly in that column so that
-* it occupies the cell closest to the bottom of the board array for that
-* column.
-*
-* For the computer player, you will need to randomly generate a column
-* number to place a token in and if that column is full, generate a
-* different column number until a column number with some free space has
-* been found.
-*
-* @param current the current player
-* @param board the game board that we will attempt to insert a token into
-* @return enum @ref input_result indicating the state of user input (in
-* case this run involved user input
+  This function allows each player to have a turn and adds the token entered by the player 
+  to the game board
 **/
-enum input_result take_turn(struct player * current, struct player * human,
-struct player* computer, enum cell_contents board[][BOARDWIDTH])
+enum input_result take_turn(struct player * current, enum cell_contents board[][BOARDWIDTH])
 {
-	char column[INPUT_SIZE + 2];
-	char *pointer;
-	int numColumn;
+	int numColumn = 0;
 	int bottomColumn;
 	int i, j;
 	BOOLEAN test = FALSE;
 
-	/*current->type = rand() % 2;
-	if (current->type == 0)
+	if (current->type == HUMAN)
 	{
-	current->type = 1;
-	}*/
-
-	if (emptyBoard(board) == TRUE)
-	{
-		current->thiscolor = C_WHITE;
-		if (current->thiscolor == human->thiscolor)
+		if (humanColumnChoice(current, &numColumn) == RTM)
 		{
-			/*strcpy_s(current->name, NAMELEN + 1, human->name);*/
-			strcpy(current->name, human->name);
-			current->thiscolor = human->thiscolor;
-			current->counters = human->counters;
-			current->type = human->type;
-			humanColumnChoice(&current, &numColumn);
-
-			/*fgets(column, INPUT_SIZE + 2, stdin);
-
-			//refrence
-			if (column[strlen(column) - 1] != '\n')
-			{
-				read_rest_of_line();
-				numColumn = (int)strtol(column, &pointer, 10);
-			}
-			else
-			{
-				column[strlen(column) - 1] = '\0';
-				numColumn = strtol(column, &pointer, 10);
-			}*/
-		}
-		else if (current->thiscolor == computer->thiscolor)
-		{
-			/*strcpy_s(current->name, NAMELEN + 1, computer->name);*/
-			strcpy(current->name, computer->name);
-			current->thiscolor = computer->thiscolor;
-			current->counters = computer->counters;
-			current->type = computer->type;
-			compColumnChoice(&current, &numColumn);
-
-			/*numColumn = rand() % BOARDWIDTH;
-			if (numColumn == 0)
-			{
-				numColumn = 1;
-			}*/
+			return RTM;
 		}
 	}
-
-	/*if (current->thiscolor == C_WHITE && emptyBoard(board) == TRUE)
+	else if (current->type == COMPUTER)
 	{
-	columnChoice(&current, &numColumn);
-	}*/
-
-	if (emptyBoard(board) == FALSE)
-	{
-		if (firstTurn(board) == TRUE)
-		{
-			if (current->type == HUMAN)
-			{
-				/*strcpy_s(current->name, NAMELEN + 1, computer->name);*/
-				strcpy(current->name, computer->name);
-				current->thiscolor = computer->thiscolor;
-				current->counters = computer->counters;
-				current->type = computer->type;
-				compColumnChoice(&current, &numColumn);
-			}
-			else if (current->type == COMPUTER)
-			{
-				/*strcpy_s(current->name, NAMELEN + 1, human->name);*/
-				strcpy(current->name, human->name);
-				current->thiscolor = human->thiscolor;
-				current->counters = human->counters;
-				current->type = human->type;
-				humanColumnChoice(&current, &numColumn);
-			}
-		}
-		else
-		{
-			if (current->type == COMPUTER)
-			{
-				humanColumnChoice(&current, &numColumn);
-				current->type = human->type;
-			}
-			else if (current->type == HUMAN)
-			{
-				compColumnChoice(&current, &numColumn);
-				current->type = computer->type;
-			}
-		}
-		/*if (current->type == HUMAN)
-		{
-			humanColumnChoice(&current, &numColumn);
-		}
-		else if (current->type == COMPUTER)
-		{
-			compColumnChoice(&current, &numColumn);
-		}*/
+		compColumnChoice(current, &numColumn);
 	}
 
 	current->counters++;
 
+	/* This variable is used to get the board to start adding to the board 
+	from the bottom of it */
 	bottomColumn = 5;
-
+	
 	for (i = 0; i < BOARDHEIGHT; i++)
 	{
 		for (j = 0; j < BOARDWIDTH; j++)
 		{
-			if (numColumn == j + 1)
+			/* Checks if the column number inputed exists */
+			if (numColumn == j + MINCOLUMN)
 			{
 				do
 				{
-					if (board[i + bottomColumn][j] == C_EMPTY)
+					/* checks for out of bounds to prevent seg faults */
+					if (i + bottomColumn < BOARDHEIGHT && numColumn - MINCOLUMN < BOARDWIDTH)
 					{
-						board[i + bottomColumn][j] = current->thiscolor;
-						test = TRUE;
-					}
-					else
-					{
-						bottomColumn--;
+						/* Checks if the block cell is empty to add a token */
+						if (board[i + bottomColumn][numColumn - MINCOLUMN] == C_EMPTY)
+						{
+							board[i + bottomColumn][numColumn - MINCOLUMN] = current->thiscolor;
+							test = TRUE;
+						}
+						/* Checks if the column chosen is full and if it is, it asks for a 
+						new column of the current player */
+						else if (i + bottomColumn < 0)
+						{
+							bottomColumn = 5;
+							if (current->type == HUMAN)
+							{
+								printf("The column chosen is full. Re-Enter Column Number: ");
+								if (humanColumnChoice(current, &numColumn) == RTM)
+								{
+									return RTM;
+								}
+							}
+							else if (current->type == COMPUTER)
+							{
+								compColumnChoice(current, &numColumn);
+							}
+						}
+						else
+						{
+							/* Decreases the depth of the column to add a token */
+							bottomColumn--;
+						}
 					}
 				} while (test == FALSE);
-			} 
+			}
 		}
 	}
 
-	/*
-	* Default return value - delete this comment and the return
-	* value and replace it with appropriate logic to handle either
-	* a human or computer turn including handling any input errors.
-	*/
-	return FAILURE;
+	return SUCCESS;
 }
